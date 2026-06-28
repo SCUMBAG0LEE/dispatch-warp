@@ -180,6 +180,8 @@ func (d *Dispatcher) StartHealthChecks(ctx context.Context, interval time.Durati
 	ticker := time.NewTicker(interval)
 	go func() {
 		defer ticker.Stop()
+		// Give OS (especially Windows Wintun) a moment to fully initialize and bind the IP addresses
+		time.Sleep(2 * time.Second)
 		d.checkAllRoutes()
 		for {
 			select {

@@ -85,8 +85,7 @@ func (s *SocksServer) ListenAndServe() error {
 	for {
 		conn, err := listener.Accept()
 		if err != nil {
-			logPrintf("Accept error: %v", err)
-			continue
+			return err
 		}
 		go s.handleConnection(conn)
 	}
