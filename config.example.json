@@ -1,0 +1,33 @@
+{
+  "listen_address": "127.0.0.1",
+  "listen_port": 1080,
+  "disable_logging": false,
+  "dns_server": "1.1.1.1:53",
+  "lb_mode": "manual",
+  "interfaces": [
+    {
+      "name": "Ethernet",
+      "bind_address": "192.168.1.100",
+      "weight": 1,
+      "warp": {
+        "enabled": false
+      }
+    },
+    {
+      "name": "Wi-Fi Warp",
+      "bind_address": "192.168.1.101",
+      "weight": 1,
+      "warp": {
+        "enabled": false,
+        "mode": "auto",
+        "private_key": "YOUR_WARP_PRIVATE_KEY",
+        "peer_public_key": "bmXOC+F1FxEMF9dyiK2H5/1SUtzH0JuVo51h2wPfgyo=",
+        "peer_endpoint": "engage.cloudflareclient.com:2408",
+        "local_address_v4": "172.16.0.2/32",
+        "local_address_v6": "2606:4700:110:8f83:6e63:b3e4:6b39:d475/128",
+        "interface_name": "wg-warp",
+        "mtu": 1280
+      }
+    }
+  ]
+}
