@@ -150,7 +150,7 @@ If you use [wgcf](https://github.com/ViRb3/wgcf) to generate your Warp credentia
 
 
 
-Run the server (it automatically looks for `config.json` if no arguments are provided):
+Run the server (it automatically looks for `config.json` in your current directory, or next to the executable if not found):
 ```bash
 $ dispatch start
 ```

@@ -8,6 +8,7 @@ import (
 	"net"
 	"os"
 	"os/signal"
+	"path/filepath"
 	"strconv"
 	"strings"
 	"syscall"
@@ -134,15 +135,26 @@ func startServer(args []string) {
 			})
 		}
 	} else {
-		// Fallback: check if local config.json exists
-		if _, err := os.Stat("config.json"); err == nil {
-			log.Println("No arguments provided, loading config.json...")
-			cfg, err = LoadConfig("config.json")
+		// Fallback: check if local config.json exists in CWD
+		path := "config.json"
+		if _, err := os.Stat(path); err != nil {
+			// If not found in CWD, check in the executable's directory
+			if execPath, execErr := os.Executable(); execErr == nil {
+				pathInExecDir := filepath.Join(filepath.Dir(execPath), "config.json")
+				if _, statErr := os.Stat(pathInExecDir); statErr == nil {
+					path = pathInExecDir
+				}
+			}
+		}
+
+		if _, err := os.Stat(path); err == nil {
+			log.Printf("No arguments provided, loading config from %s...", path)
+			cfg, err = LoadConfig(path)
 			if err != nil {
-				log.Fatalf("Failed to load config.json: %v", err)
+				log.Fatalf("Failed to load config file: %v", err)
 			}
 		} else {
-			log.Fatal("Error: No interfaces specified and config.json not found.\nRun 'dispatch help' or 'dispatch start -h' for usage.")
+			log.Fatal("Error: No interfaces specified and config.json not found in current directory or executable directory.\nRun 'dispatch help' or 'dispatch start -h' for usage.")
 		}
 	}
 
